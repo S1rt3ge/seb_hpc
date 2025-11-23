@@ -289,7 +289,7 @@ def main():
         print(f"Available columns: {features.columns.tolist()}")
         return
     
-    # Step 2: Train clusters in PARALLEL across GPUs
+    # Step 2: Train clusters in PARALLEL across GPUs using torch.multiprocessing
     clusters = sorted(features['cluster'].unique())
     print(f"\nClusters to train: {len(clusters)}")
     print(f"Training in parallel across {N_GPUS} GPUs")
@@ -297,27 +297,38 @@ def main():
     # Assign clusters to GPUs
     cluster_gpu_pairs = [(cluster, i % N_GPUS) for i, cluster in enumerate(clusters)]
 
-    # Train in parallel using multiprocessing
-    from concurrent.futures import ProcessPoolExecutor, as_completed
+    # Use torch.multiprocessing Pool for CUDA compatibility
+    from torch.multiprocessing import Pool, set_start_method
+
+    def train_wrapper(args):
+        cluster, gpu_id = args
+        import os
+        os.environ['CUDA_VISIBLE_DEVICES'] = str(gpu_id)
+        return train_cluster(cluster, features, gpu_id=0)  # Use device 0 since we set CUDA_VISIBLE_DEVICES
 
     all_results = []
 
-    with ProcessPoolExecutor(max_workers=N_GPUS) as executor:
-        # Submit all cluster training jobs
-        future_to_cluster = {
-            executor.submit(train_cluster, cluster, features, gpu_id): cluster
-            for cluster, gpu_id in cluster_gpu_pairs
-        }
+    # Train in batches of N_GPUS
+    for batch_start in range(0, len(cluster_gpu_pairs), N_GPUS):
+        batch = cluster_gpu_pairs[batch_start:batch_start + N_GPUS]
+        print(f"\nBatch {batch_start//N_GPUS + 1}: Training {[c for c, _ in batch]}")
 
-        # Collect results as they complete
-        for future in as_completed(future_to_cluster):
-            cluster = future_to_cluster[future]
+        with Pool(processes=len(batch)) as pool:
             try:
-                result = future.result()
-                all_results.append(result)
-                print(f"\n✓ Completed: {cluster}")
+                results = pool.map(train_wrapper, batch)
+                all_results.extend(results)
+                for r in results:
+                    print(f"✓ Completed: {r['cluster']}")
             except Exception as e:
-                print(f"\n✗ Failed: {cluster} - {e}")
+                print(f"✗ Batch failed: {e}")
+                # Fallback to sequential for this batch
+                for cluster, gpu_id in batch:
+                    try:
+                        result = train_cluster(cluster, features, gpu_id)
+                        all_results.append(result)
+                        print(f"✓ Completed: {cluster}")
+                    except Exception as e2:
+                        print(f"✗ Failed: {cluster} - {e2}")
     
     # Step 3: Save results
     summary = save_results(all_results)

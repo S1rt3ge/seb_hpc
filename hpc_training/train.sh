@@ -14,17 +14,18 @@ echo "Working dir: $(pwd)"
 echo "Node: $(hostname)"
 echo ""
 
-# Load modules
+# Load modules - use pre-built PyTorch with CUDA
 module purge
-module load python/3.9.19
+unset PYTHONHOME
+unset PYTHONPATH
+module load anaconda/conda-24.9.2
+module load AI/pytorch-1.13.1-gpu-conda
 
-# Install requirements
-pip install --user -q "torch>=1.13.0,<2.2"
-pip install --user -q "pandas>=1.5.0,<2.1"
-pip install --user -q "numpy>=1.23.0,<1.26"
-pip install --user -q "scikit-learn>=1.2.0,<1.4"
-pip install --user -q "statsmodels>=0.14.0,<0.15"
-pip install --user -q "joblib>=1.2.0,<1.4"
+# Install additional requirements (PyTorch already loaded via module)
+pip install --user -q pandas==1.5.3
+pip install --user -q scikit-learn==1.2.2
+pip install --user -q statsmodels==0.14.0
+pip install --user -q joblib==1.3.2
 
 # Check GPU availability
 echo "Checking GPUs..."

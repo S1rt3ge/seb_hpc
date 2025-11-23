@@ -1,5 +1,6 @@
 # Python 3.9.19 compatible versions
-torch>=1.13.0,<2.2
+# Use torch 2.0.1 with CUDA 11.8 for cuDNN 8.7 compatibility
+torch==2.0.1
 pandas>=1.5.0,<2.1
 numpy>=1.23.0,<1.26
 scikit-learn>=1.2.0,<1.4
