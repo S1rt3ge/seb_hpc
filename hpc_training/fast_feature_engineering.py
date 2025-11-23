@@ -69,6 +69,8 @@ def prepare_timeseries_features(transactions, customers):
             
             # Step 4: Calculate TARGET - cash flow growth rate
             weekly_cf['cash_flow_growth'] = weekly_cf['cash_flow'].pct_change()
+            # Replace infinities (from division by zero) with NaN
+            weekly_cf['cash_flow_growth'] = weekly_cf['cash_flow_growth'].replace([np.inf, -np.inf], np.nan)
             
             # Step 5: Add lagged features (past 3 weeks)
             for lag in range(1, 4):
@@ -128,7 +130,9 @@ def prepare_timeseries_features(transactions, customers):
     scale_cols = [col for col in numeric_cols if col not in exclude_cols]
     
     scaler = StandardScaler()
-    result[scale_cols] = scaler.fit_transform(result[scale_cols].fillna(0))
+    # Replace infinities and NaN before scaling
+    result[scale_cols] = result[scale_cols].replace([np.inf, -np.inf], np.nan).fillna(0)
+    result[scale_cols] = scaler.fit_transform(result[scale_cols])
     
     print(f"\nFinal dataset:")
     print(f"  Shape: {result.shape}")

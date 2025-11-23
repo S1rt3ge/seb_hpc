@@ -16,7 +16,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 from config import *
-from fast_feature_engineering import prepare_fast_features
+from fast_feature_engineering import prepare_timeseries_features
 from fast_dl_models import FastTimeSeriesDataset, create_model, FastTrainer
 from torch.utils.data import DataLoader
 
@@ -275,7 +275,6 @@ def main():
         print(f"Customers: {len(customers):,}")
         
         # Generate features
-        from fast_feature_engineering import prepare_timeseries_features
         features = prepare_timeseries_features(transactions, customers)
         
         # Save for next time
@@ -290,16 +289,35 @@ def main():
         print(f"Available columns: {features.columns.tolist()}")
         return
     
-    # Step 2: Train clusters
+    # Step 2: Train clusters in PARALLEL across GPUs
     clusters = sorted(features['cluster'].unique())
     print(f"\nClusters to train: {len(clusters)}")
-    
+    print(f"Training in parallel across {N_GPUS} GPUs")
+
+    # Assign clusters to GPUs
+    cluster_gpu_pairs = [(cluster, i % N_GPUS) for i, cluster in enumerate(clusters)]
+
+    # Train in parallel using multiprocessing
+    from concurrent.futures import ProcessPoolExecutor, as_completed
+
     all_results = []
-    
-    for i, cluster in enumerate(clusters):
-        gpu_id = i % N_GPUS if torch.cuda.is_available() else 0
-        result = train_cluster(cluster, features, gpu_id)
-        all_results.append(result)
+
+    with ProcessPoolExecutor(max_workers=N_GPUS) as executor:
+        # Submit all cluster training jobs
+        future_to_cluster = {
+            executor.submit(train_cluster, cluster, features, gpu_id): cluster
+            for cluster, gpu_id in cluster_gpu_pairs
+        }
+
+        # Collect results as they complete
+        for future in as_completed(future_to_cluster):
+            cluster = future_to_cluster[future]
+            try:
+                result = future.result()
+                all_results.append(result)
+                print(f"\n✓ Completed: {cluster}")
+            except Exception as e:
+                print(f"\n✗ Failed: {cluster} - {e}")
     
     # Step 3: Save results
     summary = save_results(all_results)

@@ -1,7 +1,7 @@
 #!/bin/sh
 #PBS -N SME_CashFlow
 #PBS -q batch
-#PBS -l nodes=1:ppn=128:gpus=3
+#PBS -l nodes=1:ppn=64:gpus=4
 #PBS -j oe
 
 cd $PBS_O_WORKDIR

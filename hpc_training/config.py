@@ -39,7 +39,7 @@ KNN_CONFIGS = [
     {'n_neighbors': 7, 'weights': 'distance', 'p': 2},
 ]
 
-N_GPUS = 3
+N_GPUS = 4
 N_WORKERS = 8
 
 MODELS_DL_DIR = 'models_dl'
