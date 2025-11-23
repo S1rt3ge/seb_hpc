@@ -16,12 +16,15 @@ echo ""
 
 # Load modules
 module purge
-module load AI/pytorch-1.13.1-gpu-conda
+module load python/3.9.19
 
-# Install additional requirements
-pip install --user -q scikit-learn==1.2.2
-pip install --user -q pandas==1.5.3
-pip install --user -q statsmodels==0.14.0
+# Install requirements
+pip install --user -q "torch>=1.13.0,<2.2"
+pip install --user -q "pandas>=1.5.0,<2.1"
+pip install --user -q "numpy>=1.23.0,<1.26"
+pip install --user -q "scikit-learn>=1.2.0,<1.4"
+pip install --user -q "statsmodels>=0.14.0,<0.15"
+pip install --user -q "joblib>=1.2.0,<1.4"
 
 # Check GPU availability
 echo "Checking GPUs..."
