@@ -1,0 +1,1 @@
+{"cluster": "Retail_Seasonal", "best_model": "LSTM", "training_time": 37.12676668167114, "n_customers": 22, "n_observations": 2256, "knn_rmse": 1.453228369666689, "lstm_rmse": 1.350118407318081, "gru_rmse": 1.3504641638379427, "transformer_rmse": 3.306405488773304}

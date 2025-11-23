@@ -1,0 +1,1 @@
+{"cluster": "Retail_Steady", "best_model": "LSTM", "training_time": 47.557457447052, "n_customers": 10, "n_observations": 1033, "knn_rmse": 1.5161305951248245, "lstm_rmse": 1.376553747211762, "gru_rmse": 1.3823046323995756, "transformer_rmse": 1.9403540321849289}

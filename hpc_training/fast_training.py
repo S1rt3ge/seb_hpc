@@ -20,6 +20,15 @@ from fast_feature_engineering import prepare_timeseries_features
 from fast_dl_models import FastTimeSeriesDataset, create_model, FastTrainer
 from torch.utils.data import DataLoader
 
+# Global variable for multiprocessing
+_FEATURES_DF = None
+
+def train_wrapper(args):
+    """Wrapper for parallel training - must be at module level for pickling"""
+    cluster, gpu_id = args
+    os.environ['CUDA_VISIBLE_DEVICES'] = str(gpu_id)
+    return train_cluster(cluster, _FEATURES_DF, gpu_id=0)
+
 
 def prepare_data(cluster_data, sequence_length=SEQUENCE_LENGTH):
     """Prepare train/val/test splits"""
@@ -289,46 +298,25 @@ def main():
         print(f"Available columns: {features.columns.tolist()}")
         return
     
-    # Step 2: Train clusters in PARALLEL across GPUs using torch.multiprocessing
+    # Step 2: Train clusters sequentially on GPU 0
     clusters = sorted(features['cluster'].unique())
     print(f"\nClusters to train: {len(clusters)}")
-    print(f"Training in parallel across {N_GPUS} GPUs")
 
-    # Assign clusters to GPUs
-    cluster_gpu_pairs = [(cluster, i % N_GPUS) for i, cluster in enumerate(clusters)]
-
-    # Use torch.multiprocessing Pool for CUDA compatibility
-    from torch.multiprocessing import Pool, set_start_method
-
-    def train_wrapper(args):
-        cluster, gpu_id = args
-        import os
-        os.environ['CUDA_VISIBLE_DEVICES'] = str(gpu_id)
-        return train_cluster(cluster, features, gpu_id=0)  # Use device 0 since we set CUDA_VISIBLE_DEVICES
+    # Check GPU
+    if torch.cuda.is_available():
+        print(f"Using GPU: {torch.cuda.get_device_name(0)}")
+    else:
+        print("WARNING: No GPU available, using CPU!")
 
     all_results = []
 
-    # Train in batches of N_GPUS
-    for batch_start in range(0, len(cluster_gpu_pairs), N_GPUS):
-        batch = cluster_gpu_pairs[batch_start:batch_start + N_GPUS]
-        print(f"\nBatch {batch_start//N_GPUS + 1}: Training {[c for c, _ in batch]}")
-
-        with Pool(processes=len(batch)) as pool:
-            try:
-                results = pool.map(train_wrapper, batch)
-                all_results.extend(results)
-                for r in results:
-                    print(f"✓ Completed: {r['cluster']}")
-            except Exception as e:
-                print(f"✗ Batch failed: {e}")
-                # Fallback to sequential for this batch
-                for cluster, gpu_id in batch:
-                    try:
-                        result = train_cluster(cluster, features, gpu_id)
-                        all_results.append(result)
-                        print(f"✓ Completed: {cluster}")
-                    except Exception as e2:
-                        print(f"✗ Failed: {cluster} - {e2}")
+    for i, cluster in enumerate(clusters):
+        try:
+            result = train_cluster(cluster, features, gpu_id=0)
+            all_results.append(result)
+            print(f"✓ Completed: {cluster} ({i+1}/{len(clusters)})")
+        except Exception as e:
+            print(f"✗ Failed: {cluster} - {e}")
     
     # Step 3: Save results
     summary = save_results(all_results)

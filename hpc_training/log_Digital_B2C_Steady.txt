@@ -1,0 +1,37 @@
+Cluster: Digital_B2C_Steady, GPU: 3
+CUDA available: True
+Starting training for Digital_B2C_Steady...
+
+================================================================================
+TRAINING: Digital_B2C_Steady (GPU 0)
+================================================================================
+CUDA_VISIBLE_DEVICES=3 → using cuda:0
+Customers: 33
+Observations: 3212
+Target statistics:
+  Mean: 84.2895
+  Std: 3974.9722
+  Min: -30051.0000
+  Max: 189089.5000
+    WARNING: Extreme target values detected (max=189089.50)
+    Clipping to [-2, 2] range...
+Features: 19
+Train batches: 1
+
+  Training KNN...
+    Best KNN RMSE: 1.3597, Config: {'n_neighbors': 7, 'weights': 'distance', 'p': 2}
+
+  Training lstm...
+    Best lstm RMSE: 1.2933
+
+  Training gru...
+    Best gru RMSE: 1.3187
+
+  Training transformer...
+    Best transformer RMSE: 1.6553
+
+================================================================================
+BEST MODEL: LSTM (RMSE: 1.2933)
+Time: 0.8 minutes
+================================================================================
+✓ Digital_B2C_Steady complete! Time: 0.8 min

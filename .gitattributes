@@ -2,3 +2,5 @@
 *.csv filter=lfs diff=lfs merge=lfs -text
 * !text !filter !merge !diff
 hpc_training/synthetic_sme_transactions_processed.csv filter=lfs diff=lfs merge=lfs -text
+hpc_training/models_dl/*.pt filter=lfs diff=lfs merge=lfs -text
+hpc_training/models_dl/*.pkl filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,1 @@
+{"cluster": "B2B_Services_Seasonal", "best_model": "Transformer", "training_time": 97.24541592597961, "n_customers": 237, "n_observations": 22348, "knn_rmse": 1.4312177477971944, "lstm_rmse": 1.3203408494820725, "gru_rmse": 1.3231017298445096, "transformer_rmse": 1.3197856942974358}

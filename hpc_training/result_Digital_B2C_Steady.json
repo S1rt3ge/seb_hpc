@@ -1,0 +1,1 @@
+{"cluster": "Digital_B2C_Steady", "best_model": "LSTM", "training_time": 45.55634522438049, "n_customers": 33, "n_observations": 3212, "knn_rmse": 1.359681196586274, "lstm_rmse": 1.2933128700346996, "gru_rmse": 1.3186607985103187, "transformer_rmse": 1.6553308105796043}

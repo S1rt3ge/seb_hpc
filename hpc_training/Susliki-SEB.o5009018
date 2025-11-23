@@ -1,0 +1,104 @@
+Job started: Sun Nov 23 20:28:28 EET 2025
+Working dir: /mnt/home/hpc00350/SEB-susliki/hpc_training
+
+The following have been reloaded with a version change:
+  1) anaconda/conda-24.9.2 => anaconda/conda-23.1.0
+
+Traceback (most recent call last):
+  File "/mnt/opt/exp_soft/conda/2023-02/bin/conda", line 12, in <module>
+    from conda.cli import main
+ModuleNotFoundError: No module named 'conda'
+
+[notice] A new release of pip is available: 23.0.1 -> 25.3
+[notice] To update, run: pip3.9 install --upgrade pip
+
+[notice] A new release of pip is available: 23.0.1 -> 25.3
+[notice] To update, run: pip3.9 install --upgrade pip
+
+[notice] A new release of pip is available: 23.0.1 -> 25.3
+[notice] To update, run: pip3.9 install --upgrade pip
+
+[notice] A new release of pip is available: 23.0.1 -> 25.3
+[notice] To update, run: pip3.9 install --upgrade pip
+
+[notice] A new release of pip is available: 23.0.1 -> 25.3
+[notice] To update, run: pip3.9 install --upgrade pip
+
+[notice] A new release of pip is available: 23.0.1 -> 25.3
+[notice] To update, run: pip3.9 install --upgrade pip
+================================================================================
+PARALLEL CASH FLOW FORECASTING
+================================================================================
+Start: 2025-11-23 20:28:37.037002
+================================================================================
+================================================================================
+GPU VERIFICATION
+================================================================================
+✓ Found 4 GPU(s)
+  GPU 0: Tesla V100-PCIE-16GB
+  GPU 1: Tesla V100-PCIE-16GB
+  GPU 2: Tesla V100-PCIE-16GB
+  GPU 3: Tesla V100-PCIE-16GB
+================================================================================
+
+✓ Clusters: 8
+  ['B2B_Services_Seasonal', 'B2B_Services_Steady', 'Digital_B2C_Seasonal', 'Digital_B2C_Steady', 'Mixed', 'Retail_Seasonal', 'Retail_Steady', 'Subscription_SaaS']
+
+================================================================================
+BATCH 1: ['B2B_Services_Seasonal', 'B2B_Services_Steady', 'Digital_B2C_Seasonal', 'Digital_B2C_Steady']
+================================================================================
+  Launching: B2B_Services_Seasonal → GPU 0
+  Launching: B2B_Services_Steady → GPU 1
+  Launching: Digital_B2C_Seasonal → GPU 2
+  Launching: Digital_B2C_Steady → GPU 3
+
+  Waiting for batch 1...
+
+  ✓ B2B_Services_Seasonal (GPU 0)
+      Transformer: RMSE 1.3198, Time 1.6min
+  ✓ B2B_Services_Steady (GPU 1)
+      GRU: RMSE 1.3369, Time 1.9min
+  ✓ Digital_B2C_Seasonal (GPU 2)
+      LSTM: RMSE 1.3433, Time 1.1min
+  ✓ Digital_B2C_Steady (GPU 3)
+      LSTM: RMSE 1.2933, Time 0.8min
+================================================================================
+BATCH 2: ['Mixed', 'Retail_Seasonal', 'Retail_Steady', 'Subscription_SaaS']
+================================================================================
+  Launching: Mixed → GPU 0
+  Launching: Retail_Seasonal → GPU 1
+  Launching: Retail_Steady → GPU 2
+  Launching: Subscription_SaaS → GPU 3
+
+  Waiting for batch 2...
+
+  ✓ Mixed (GPU 0)
+      LSTM: RMSE 1.3497, Time 0.7min
+  ✓ Retail_Seasonal (GPU 1)
+      LSTM: RMSE 1.3501, Time 0.6min
+  ✓ Retail_Steady (GPU 2)
+      LSTM: RMSE 1.3766, Time 0.8min
+  ✓ Subscription_SaaS (GPU 3)
+      LSTM: RMSE 1.3528, Time 1.3min
+
+================================================================================
+SAVING SUMMARY
+================================================================================
+              cluster  best_model  test_rmse  training_time_min  n_customers  n_observations  knn_rmse  lstm_rmse  gru_rmse  transformer_rmse
+B2B_Services_Seasonal Transformer   1.319786           1.620757          237           22348  1.431218   1.320341  1.323102          1.319786
+  B2B_Services_Steady         GRU   1.336877           1.920337          257           22804  1.459887   1.337151  1.336877          2.490066
+ Digital_B2C_Seasonal        LSTM   1.343295           1.081727           79            8038  1.390716   1.343295  1.351680          3.660599
+   Digital_B2C_Steady        LSTM   1.293313           0.759272           33            3212  1.359681   1.293313  1.318661          1.655331
+                Mixed        LSTM   1.349671           0.651909           53            5223  1.466869   1.349671  1.407728          3.281881
+      Retail_Seasonal        LSTM   1.350118           0.618779           22            2256  1.453228   1.350118  1.350464          3.306405
+        Retail_Steady        LSTM   1.376554           0.792624           10            1033  1.516131   1.376554  1.382305          1.940354
+    Subscription_SaaS        LSTM   1.352845           1.331145          225           15527  1.489882   1.352845  1.365413          1.554698
+
+================================================================================
+✓ COMPLETE!
+================================================================================
+Time: 0.06 hours
+Clusters: 8/8
+End: 2025-11-23 20:32:07.222907
+================================================================================
+Job finished: Sun Nov 23 20:32:07 EET 2025
