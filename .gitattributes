@@ -4,3 +4,5 @@
 hpc_training/synthetic_sme_transactions_processed.csv filter=lfs diff=lfs merge=lfs -text
 hpc_training/models_dl/*.pt filter=lfs diff=lfs merge=lfs -text
 hpc_training/models_dl/*.pkl filter=lfs diff=lfs merge=lfs -text
+db/*.db filter=lfs diff=lfs merge=lfs -text
+db/*.csv filter=lfs diff=lfs merge=lfs -text
