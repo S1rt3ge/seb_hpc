@@ -1,1 +1,0 @@
-{"cluster": "B2B_Services_Steady", "best_model": "GRU", "training_time": 115.22024083137512, "n_customers": 257, "n_observations": 22804, "knn_rmse": 1.4598867238025834, "lstm_rmse": 1.337151238210105, "gru_rmse": 1.3368770160962367, "transformer_rmse": 2.4900657629947185}

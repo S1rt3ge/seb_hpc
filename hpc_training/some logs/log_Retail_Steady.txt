@@ -1,0 +1,37 @@
+Cluster: Retail_Steady, GPU: 2
+CUDA available: True
+Starting training for Retail_Steady...
+
+================================================================================
+TRAINING: Retail_Steady (GPU 0)
+================================================================================
+CUDA_VISIBLE_DEVICES=2 → using cuda:0
+Customers: 10
+Observations: 1033
+Target statistics:
+  Mean: 66162287301622.6328
+  Std: 2126476911135463.7500
+  Min: -6989.6349
+  Max: 68345642782556160.0000
+    WARNING: Extreme target values detected (max=68345642782556160.00)
+    Clipping to [-2, 2] range...
+Features: 19
+Train batches: 1
+
+  Training KNN...
+    Best KNN RMSE: 1.5161, Config: {'n_neighbors': 5, 'weights': 'distance', 'p': 2}
+
+  Training lstm...
+    Best lstm RMSE: 1.3766
+
+  Training gru...
+    Best gru RMSE: 1.3823
+
+  Training transformer...
+    Best transformer RMSE: 1.9404
+
+================================================================================
+BEST MODEL: LSTM (RMSE: 1.3766)
+Time: 0.8 minutes
+================================================================================
+✓ Retail_Steady complete! Time: 0.8 min

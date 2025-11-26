@@ -1,1 +1,0 @@
-{"cluster": "Subscription_SaaS", "best_model": "LSTM", "training_time": 79.86869668960571, "n_customers": 225, "n_observations": 15527, "knn_rmse": 1.4898821743018917, "lstm_rmse": 1.3528451689592282, "gru_rmse": 1.3654131403836671, "transformer_rmse": 1.5546975263378333}

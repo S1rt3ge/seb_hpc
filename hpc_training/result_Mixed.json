@@ -1,1 +1,0 @@
-{"cluster": "Mixed", "best_model": "LSTM", "training_time": 39.114553451538086, "n_customers": 53, "n_observations": 5223, "knn_rmse": 1.4668693048172572, "lstm_rmse": 1.349670952391448, "gru_rmse": 1.4077280717684975, "transformer_rmse": 3.281881212757381}

@@ -1,1 +1,0 @@
-{"cluster": "Digital_B2C_Seasonal", "best_model": "LSTM", "training_time": 64.90363216400146, "n_customers": 79, "n_observations": 8038, "knn_rmse": 1.3907156926177944, "lstm_rmse": 1.3432948612307671, "gru_rmse": 1.3516802272850514, "transformer_rmse": 3.660599192426257}
