@@ -1,6 +1,6 @@
 """
 Complete FastAPI App with Real Predictions
-Works with ONLY raw transaction data - no pre-computed features needed
+FIXED: Uses correct feature exclusion for 26-feature models
 """
 
 from fastapi import FastAPI, Request, Form, HTTPException
@@ -23,15 +23,12 @@ app = FastAPI(title="SEB SME Cash Management")
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="../static"), name="static")
+app.mount("/SEB Login_files", StaticFiles(directory="../templates/SEB Login_files"), name="seb_login_files")
 
 # Templates
 templates = Jinja2Templates(directory="../templates")
 
-@app.get("/health")
-async def health():
-    return {"status": "ok"}
-
-# Global variables for models (load once at startup)
+# Global variables for models
 predictor = None
 feature_engine = None
 
@@ -46,14 +43,10 @@ async def startup_event():
     print("=" * 80)
 
     try:
-        # Initialize predictor
         predictor = CashFlowPredictor(models_dir='../prediction/models_dl_optimized')
         print("✓ Predictor loaded")
 
-        # Initialize feature engine (NO CSV dependencies!)
-        feature_engine = CompleteFeatureEngine(
-            scaler_params_path='scaler_params.json'
-        )
+        feature_engine = CompleteFeatureEngine(scaler_params_path='scaler_params.json')
         print("✓ Feature engine loaded")
         print("\n⚠️  NOTE: Works with NEW customers - no pre-computed features needed!")
 
@@ -70,7 +63,7 @@ def get_db_connection():
     """Get SQLite database connection"""
     db_path = 'C:/Users/aruti/PycharmProjects/susliki-seb-hpc/db/transactions.db'
     if not os.path.exists(db_path):
-        db_path = '../db/transactions.db'  # Try alternative name
+        db_path = '../db/transactions.db'
 
     if not os.path.exists(db_path):
         raise FileNotFoundError(f"Database not found at {db_path}")
@@ -84,22 +77,21 @@ def get_customers_list():
     """Get list of unique customers from database"""
     conn = get_db_connection()
 
-    # Get unique customers with their transaction counts
     query = """
-            SELECT cust_id, \
-                   COUNT(*)             as txn_count, \
-                   MIN(BookingDatetime) as first_txn, \
-                   MAX(BookingDatetime) as last_txn
-            FROM transactions
-            GROUP BY cust_id
-            HAVING txn_count >= 20
-            ORDER BY txn_count DESC LIMIT 100 \
-            """
+        SELECT cust_id,
+               COUNT(*) as txn_count,
+               MIN(BookingDatetime) as first_txn,
+               MAX(BookingDatetime) as last_txn
+        FROM transactions
+        GROUP BY cust_id
+        HAVING txn_count >= 20
+        ORDER BY txn_count DESC
+        LIMIT 500
+    """
 
     customers = pd.read_sql_query(query, conn)
     conn.close()
 
-    # Format for display
     customers_list = []
     for _, row in customers.iterrows():
         customers_list.append({
@@ -116,11 +108,11 @@ def get_customer_transactions(cust_id):
     conn = get_db_connection()
 
     query = """
-            SELECT *
-            FROM transactions
-            WHERE cust_id = ?
-            ORDER BY BookingDatetime \
-            """
+        SELECT *
+        FROM transactions
+        WHERE cust_id = ?
+        ORDER BY BookingDatetime
+    """
 
     transactions = pd.read_sql_query(query, conn, params=(cust_id,))
     conn.close()
@@ -131,21 +123,14 @@ def get_customer_transactions(cust_id):
 def get_customer_predictions(cust_id, n_weeks=4):
     """
     Get predictions for a customer
-    WORKS WITH NEW CUSTOMERS - calculates all features from scratch
-
-    Args:
-        cust_id: Customer ID
-        n_weeks: Number of weeks to predict ahead
-
-    Returns:
-        dict with predictions and metrics
+    FIXED: Excludes cash_flow_growth from features (26 features, not 27)
     """
 
     print(f"\n{'=' * 80}")
     print(f"GENERATING PREDICTION FOR: {cust_id}")
     print(f"{'=' * 80}")
 
-    # Step 1: Get raw transactions from database
+    # Step 1: Get transactions
     print("Step 1: Fetching transactions from database...")
     transactions = get_customer_transactions(cust_id)
 
@@ -154,7 +139,7 @@ def get_customer_predictions(cust_id, n_weeks=4):
 
     print(f"  ✓ Found {len(transactions)} transactions")
 
-    # Step 2: Calculate ALL features from raw transactions
+    # Step 2: Calculate features
     print("Step 2: Engineering features from raw data...")
     feature_result = feature_engine.prepare_features_for_prediction(cust_id, transactions)
 
@@ -165,25 +150,28 @@ def get_customer_predictions(cust_id, n_weeks=4):
     print(f"  ✓ Cluster: {cluster}")
     print(f"  ✓ Features: {features_df.shape}")
 
-    # Step 3: Prepare feature matrix for prediction
+    # Step 3: Prepare feature matrix - CRITICAL FIX
     print("Step 3: Preparing features for model...")
-    exclude_cols = ['cust_id', 'cluster', 'cash_flow', 'datetime']
+
+    # FIXED: Exclude both cash_flow AND cash_flow_growth (target variable)
+    exclude_cols = ['cust_id', 'cluster', 'cash_flow', 'cash_flow_growth', 'datetime']
     feature_cols = [col for col in features_df.columns if col not in exclude_cols]
     X = features_df[feature_cols].fillna(0).values
 
-    print(f"  ✓ Feature matrix: {X.shape}")
+    print(f"  ✓ Feature matrix: {X.shape}")  # Should be (N, 26) not (N, 27)
+    print(f"  ✓ Feature columns: {len(feature_cols)}")
 
-    # Step 4: Get predictions using best model for cluster
+    # Step 4: Get predictions
     print(f"Step 4: Generating predictions with model...")
     predictions_std, model_used = predictor.predict_best(cluster, X)
 
     print(f"  ✓ Model used: {model_used}")
 
-    # Step 5: Convert to EUR growth
+    # Step 5: Convert to EUR
     print("Step 5: Converting to EUR...")
     growth_eur = predictor.to_euros(predictions_std[-n_weeks:])
 
-    # Step 6: Generate future cash flows (cumulative)
+    # Step 6: Generate future cash flows
     print("Step 6: Calculating future cash flows...")
     future_cashflows = [last_cashflow]
     for growth in growth_eur:
@@ -195,12 +183,12 @@ def get_customer_predictions(cust_id, n_weeks=4):
     positive_weeks = sum(1 for cf in future_cashflows[1:] if cf > 0)
     negative_weeks = n_weeks - positive_weeks
 
-    # Investment opportunity (surplus above €5,000 buffer)
+    # Investment opportunity
     min_buffer = 5000
     surplus = [max(0, cf - min_buffer) for cf in future_cashflows[1:]]
     total_investable = sum(surplus)
 
-    # Potential interest (assuming 2% annual rate)
+    # Potential interest (2% annual)
     annual_rate = 0.02
     weekly_rate = annual_rate / 52
     potential_interest = total_investable * weekly_rate * n_weeks
@@ -213,7 +201,7 @@ def get_customer_predictions(cust_id, n_weeks=4):
         'cluster': cluster,
         'model_used': model_used,
         'last_cashflow': last_cashflow,
-        'predictions': future_cashflows[1:],  # Next n weeks
+        'predictions': future_cashflows[1:],
         'growth_rates': growth_eur.tolist(),
         'avg_weekly_flow': avg_weekly_flow,
         'positive_weeks': positive_weeks,
@@ -229,7 +217,6 @@ def get_customer_predictions(cust_id, n_weeks=4):
 async def login_page(request: Request):
     """Login page with customer selection"""
     customers = get_customers_list()
-
     return templates.TemplateResponse(
         "SEB Login.html",
         {"request": request, "customers": customers}
@@ -247,27 +234,22 @@ async def login(customer_id: str = Form(...)):
 
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(request: Request, customer_id: str):
-    """
-    Dashboard with real predictions
-    Works for ANY customer with raw transactions
-    """
+    """Dashboard with REAL predictions"""
 
     try:
-        # Get predictions (features calculated from scratch)
+        # Get predictions
         predictions = get_customer_predictions(customer_id, n_weeks=4)
 
         # Get transaction summary
         transactions = get_customer_transactions(customer_id)
-
-        # Calculate additional metrics
         total_transactions = len(transactions)
         date_range = f"{transactions['BookingDatetime'].min()} to {transactions['BookingDatetime'].max()}"
 
-        # Prepare data for charts
+        # Prepare chart data - WEEKLY FORECAST
         forecast_labels = [f"Week {i + 1}" for i in range(predictions['forecast_period'])]
         forecast_values = [round(cf, 2) for cf in predictions['predictions']]
 
-        # Current balance (last known cash flow)
+        # Current balance
         current_balance = round(predictions['last_cashflow'], 2)
 
         # Calculate recommendation
@@ -281,7 +263,7 @@ async def dashboard(request: Request, customer_id: str):
             recommendation = "Maintain current cash position"
             rec_type = "maintain"
 
-        # Render dashboard
+        # Render dashboard with REAL DATA
         return templates.TemplateResponse(
             "SME Cash Management - SEB.html",
             {
@@ -313,9 +295,7 @@ async def dashboard(request: Request, customer_id: str):
 
 @app.get("/api/predict/{customer_id}")
 async def api_predict(customer_id: str, weeks: int = 4):
-    """
-    API endpoint for predictions
-    """
+    """API endpoint for predictions"""
     try:
         predictions = get_customer_predictions(customer_id, n_weeks=weeks)
         return JSONResponse(content=predictions)
@@ -331,4 +311,4 @@ async def api_customers():
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
