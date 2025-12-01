@@ -1,0 +1,23 @@
+{
+  "cluster": "Digital_B2C_Combined",
+  "best_model": "KNN",
+  "training_time": 65.6873631477356,
+  "n_customers": 112,
+  "n_observations": 11261,
+  "batch_size": 337,
+  "n_batches": 21,
+  "models": {
+    "KNN": {
+      "test_rmse": 0.9332783366378522
+    },
+    "LSTM": {
+      "test_rmse": 1.4734458923339844
+    },
+    "GRU": {
+      "test_rmse": 1.3620398044586182
+    },
+    "Transformer": {
+      "test_rmse": 1.6435943841934204
+    }
+  }
+}

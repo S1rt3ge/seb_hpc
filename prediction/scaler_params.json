@@ -1,0 +1,33 @@
+{
+  "target_mean": 9.987254749726432,
+  "target_std": 88538.7409832476,
+  "feature_names": [
+    "txn_count",
+    "avg_txn",
+    "std_txn",
+    "cash_flow_growth",
+    "growth_lag_1",
+    "cashflow_lag_1",
+    "txn_count_lag_1",
+    "growth_lag_2",
+    "cashflow_lag_2",
+    "txn_count_lag_2",
+    "growth_lag_3",
+    "cashflow_lag_3",
+    "txn_count_lag_3",
+    "growth_mean_rolling",
+    "growth_std_rolling",
+    "cashflow_mean_rolling",
+    "top5_concentration",
+    "unique_counterparties",
+    "small_txn_pct",
+    "large_txn_pct",
+    "cv_coefficient",
+    "median_transaction_size",
+    "volatility_std",
+    "channel_pos_pct",
+    "channel_internet_bank_pct",
+    "negative_day_pct",
+    "transaction_frequency"
+  ]
+}

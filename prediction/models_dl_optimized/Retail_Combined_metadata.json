@@ -1,0 +1,23 @@
+{
+  "cluster": "Retail_Combined",
+  "best_model": "KNN",
+  "training_time": 43.524817943573,
+  "n_customers": 32,
+  "n_observations": 3290,
+  "batch_size": 98,
+  "n_batches": 21,
+  "models": {
+    "KNN": {
+      "test_rmse": 0.11244865528117608
+    },
+    "LSTM": {
+      "test_rmse": 0.11997196078300476
+    },
+    "GRU": {
+      "test_rmse": 0.11854345351457596
+    },
+    "Transformer": {
+      "test_rmse": 0.16730758547782898
+    }
+  }
+}

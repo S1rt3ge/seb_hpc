@@ -1,0 +1,23 @@
+{
+  "cluster": "Mixed",
+  "best_model": "KNN",
+  "training_time": 53.85139298439026,
+  "n_customers": 53,
+  "n_observations": 5239,
+  "batch_size": 157,
+  "n_batches": 20,
+  "models": {
+    "KNN": {
+      "test_rmse": 0.2631169822667938
+    },
+    "LSTM": {
+      "test_rmse": 0.37165310978889465
+    },
+    "GRU": {
+      "test_rmse": 0.34820523858070374
+    },
+    "Transformer": {
+      "test_rmse": 0.3859657347202301
+    }
+  }
+}

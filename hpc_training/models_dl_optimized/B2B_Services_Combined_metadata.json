@@ -1,0 +1,23 @@
+{
+  "cluster": "B2B_Services_Combined",
+  "best_model": "KNN",
+  "training_time": 78.15001797676086,
+  "n_customers": 494,
+  "n_observations": 45256,
+  "batch_size": 512,
+  "n_batches": 54,
+  "models": {
+    "KNN": {
+      "test_rmse": 0.3114364541110282
+    },
+    "LSTM": {
+      "test_rmse": 0.5100795030593872
+    },
+    "GRU": {
+      "test_rmse": 0.5002053380012512
+    },
+    "Transformer": {
+      "test_rmse": 0.6007119417190552
+    }
+  }
+}

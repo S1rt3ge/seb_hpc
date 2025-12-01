@@ -1,0 +1,23 @@
+{
+  "cluster": "Subscription_SaaS",
+  "best_model": "KNN",
+  "training_time": 52.408265352249146,
+  "n_customers": 226,
+  "n_observations": 15629,
+  "batch_size": 468,
+  "n_batches": 21,
+  "models": {
+    "KNN": {
+      "test_rmse": 1.427022665104563
+    },
+    "LSTM": {
+      "test_rmse": 1.5959317684173584
+    },
+    "GRU": {
+      "test_rmse": 1.570319652557373
+    },
+    "Transformer": {
+      "test_rmse": 1.832131266593933
+    }
+  }
+}
