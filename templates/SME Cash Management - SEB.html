@@ -1,20 +1,16 @@
-<html lang="en"><head>
-        <link rel="icon" href="https://www.seb.lv/themes/custom/seb8/favicon.ico" type="image/vnd.microsoft.icon">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="https://www.seb.lv/themes/custom/seb8/favicon.ico" type="image/vnd.microsoft.icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SME Cash Management — SEB</title>
     
     <style>
-        /* ====================================
-           DESIGN TOKENS — SEB Style System
-           ==================================== */
         :root {
-            /* Brand Colors */
             --brand-primary: #42a900;
             --brand-primary-hover: #008F67;
             --brand-primary-light: #E6F7F3;
-            
-            /* Neutral Scale */
             --neutral-900: #1A1F2E;
             --neutral-800: #2D3748;
             --neutral-700: #4A5568;
@@ -25,16 +21,12 @@
             --neutral-200: #EDF2F7;
             --neutral-100: #F7FAFC;
             --neutral-white: #FFFFFF;
-            
-            /* Semantic Colors */
             --success: #22C55E;
             --success-light: #F0FDF4;
             --danger: #DC2626;
             --danger-light: #FEF2F2;
             --info: #3B82F6;
             --info-light: #EFF6FF;
-            
-            /* Typography */
             --font-family: 'Inter', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             --font-size-h1: 40px;
             --font-size-h2: 28px;
@@ -43,8 +35,6 @@
             --font-size-small: 14px;
             --font-size-tiny: 12px;
             --line-height: 1.5;
-            
-            /* Spacing */
             --spacing-xs: 4px;
             --spacing-sm: 8px;
             --spacing-md: 16px;
@@ -52,21 +42,14 @@
             --spacing-xl: 32px;
             --spacing-2xl: 48px;
             --spacing-3xl: 64px;
-            
-            /* Border & Shadow */
             --border-radius: 12px;
             --border-width: 1px;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
             --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.10);
-            
-            /* Focus Ring */
             --focus-ring: 0 0 0 3px var(--brand-primary-light);
         }
         
-        /* ====================================
-           BASE RESET
-           ==================================== */
         * {
             margin: 0;
             padding: 0;
@@ -82,248 +65,133 @@
             min-height: 100vh;
         }
         
-        /* ====================================
-           LAYOUT
-           ==================================== */
         .container {
             max-width: 1280px;
             margin: 0 auto;
             padding: var(--spacing-xl) var(--spacing-lg);
         }
         
-        /* ====================================
-           HEADER
-           ==================================== */
         .header {
             background: var(--neutral-white);
             border-bottom: var(--border-width) solid var(--neutral-300);
             padding: var(--spacing-xl) 0;
-            margin-bottom: var(--spacing-3xl);
+            margin-bottom: var(--spacing-2xl);
         }
         
         .header-content {
             max-width: 1280px;
             margin: 0 auto;
             padding: 0 var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         
         .header h1 {
             font-size: var(--font-size-h1);
-            font-weight: 700;
             color: var(--neutral-900);
-            margin-bottom: var(--spacing-sm);
-            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-xs);
         }
         
         .header p {
             font-size: var(--font-size-body);
             color: var(--neutral-600);
-            font-weight: 400;
         }
         
-        /* ====================================
-           CARDS
-           ==================================== */
         .card {
             background: var(--neutral-white);
-            border: var(--border-width) solid var(--neutral-300);
             border-radius: var(--border-radius);
             padding: var(--spacing-xl);
-            box-shadow: var(--shadow-sm);
-            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-xl);
         }
         
         .card h2 {
             font-size: var(--font-size-h2);
-            font-weight: 700;
             color: var(--neutral-900);
             margin-bottom: var(--spacing-lg);
         }
         
-        .card h3 {
-            font-size: var(--font-size-h3);
-            font-weight: 600;
-            color: var(--neutral-900);
-            margin-bottom: var(--spacing-md);
+        .info-section {
+            background: var(--info-light);
+            border-left: 4px solid var(--info);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-lg);
         }
         
-        /* ====================================
-           FORM CONTROLS
-           ==================================== */
-        .controls-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: var(--spacing-lg);
-            margin-bottom: var(--spacing-2xl);
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .form-group label {
+        .info-section p {
+            margin: var(--spacing-xs) 0;
             font-size: var(--font-size-small);
-            font-weight: 600;
-            color: var(--neutral-700);
-            margin-bottom: var(--spacing-sm);
         }
         
-        .form-group select,
-        .form-group input {
-            width: 100%;
-            padding: 12px var(--spacing-md);
-            border: var(--border-width) solid var(--neutral-300);
-            border-radius: var(--border-radius);
-            font-size: var(--font-size-body);
-            font-family: var(--font-family);
-            color: var(--neutral-800);
-            background: var(--neutral-white);
-            transition: all 0.2s ease;
-            min-height: 44px;
+        .info-section strong {
+            color: var(--neutral-900);
         }
         
-        .form-group select:hover,
-        .form-group input:hover {
-            border-color: var(--neutral-400);
-        }
-        
-        .form-group select:focus,
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--brand-primary);
-            box-shadow: var(--focus-ring);
-        }
-        
-        .form-group select:disabled,
-        .form-group input:disabled {
-            background: var(--neutral-200);
-            color: var(--neutral-500);
-            cursor: not-allowed;
-        }
-        
-        /* ====================================
-           BUTTONS
-           ==================================== */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            min-height: 44px;
-            padding: 12px var(--spacing-lg);
-            background: var(--brand-primary);
-            color: var(--neutral-white);
-            border: none;
-            border-radius: var(--border-radius);
-            font-size: var(--font-size-body);
-            font-weight: 600;
-            font-family: var(--font-family);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-        }
-        
-        .btn:hover {
-            background: var(--brand-primary-hover);
-        }
-        
-        .btn:focus {
-            outline: none;
-            box-shadow: var(--focus-ring);
-        }
-        
-        .btn:active {
-            transform: translateY(1px);
-        }
-        
-        .btn:disabled {
-            background: var(--neutral-400);
-            color: var(--neutral-600);
-            cursor: not-allowed;
-        }
-        
-        /* ====================================
-           METRICS GRID
-           ==================================== */
         .metrics {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: var(--spacing-lg);
-            margin-bottom: var(--spacing-2xl);
+            margin-bottom: var(--spacing-xl);
         }
         
         .metric-card {
             background: var(--neutral-white);
-            border: var(--border-width) solid var(--neutral-300);
             border-radius: var(--border-radius);
-            padding: var(--spacing-xl);
-            box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.2s ease;
-        }
-        
-        .metric-card:hover {
+            padding: var(--spacing-lg);
             box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
         }
         
         .metric-icon {
-            width: 24px;
-            height: 24px;
-            margin-bottom: var(--spacing-md);
-            stroke: var(--neutral-600);
+            width: 40px;
+            height: 40px;
+            stroke: var(--brand-primary);
             stroke-width: 2;
             fill: none;
         }
         
         .metric-label {
             font-size: var(--font-size-small);
-            font-weight: 600;
             color: var(--neutral-600);
-            margin-bottom: var(--spacing-sm);
+            font-weight: 500;
         }
         
         .metric-value {
-            font-size: 32px;
+            font-size: var(--font-size-h2);
             font-weight: 700;
             color: var(--neutral-900);
-            margin-bottom: var(--spacing-sm);
-            line-height: 1.2;
         }
         
         .metric-change {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--spacing-xs);
             font-size: var(--font-size-small);
             font-weight: 600;
-            padding: var(--spacing-xs) var(--spacing-md);
-            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
         }
         
         .change-up {
             color: var(--success);
-            background: var(--success-light);
         }
         
         .change-down {
             color: var(--danger);
-            background: var(--danger-light);
         }
         
-        /* ====================================
-           RECOMMENDATION SECTION
-           ==================================== */
         .recommendation {
-            background: var(--brand-primary);
-            color: var(--neutral-white);
+            background: linear-gradient(135deg, var(--brand-primary) 0%, #008F67 100%);
             border-radius: var(--border-radius);
-            padding: var(--spacing-2xl);
-            margin-bottom: var(--spacing-2xl);
+            padding: var(--spacing-xl);
+            color: white;
+            margin-bottom: var(--spacing-xl);
         }
         
         .recommendation h3 {
             font-size: var(--font-size-h3);
-            font-weight: 600;
             margin-bottom: var(--spacing-md);
             opacity: 0.95;
         }
@@ -331,29 +199,20 @@
         .rec-action {
             font-size: 32px;
             font-weight: 700;
-            margin: var(--spacing-md) 0;
-            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-md);
         }
         
         .rec-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: var(--spacing-lg);
-            margin-top: var(--spacing-lg);
-        }
-        
-        .rec-item {
-            background: rgba(255, 255, 255, 0.15);
-            padding: var(--spacing-md);
-            border-radius: var(--border-radius);
         }
         
         .rec-item label {
             display: block;
             font-size: var(--font-size-small);
-            font-weight: 600;
+            opacity: 0.85;
             margin-bottom: var(--spacing-xs);
-            opacity: 0.9;
         }
         
         .rec-item .value {
@@ -361,27 +220,15 @@
             font-weight: 700;
         }
         
-        /* ====================================
-           CHARTS GRID
-           ==================================== */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: var(--spacing-lg);
-            margin-bottom: var(--spacing-2xl);
-        }
-        
         .chart-card {
             background: var(--neutral-white);
-            border: var(--border-width) solid var(--neutral-300);
             border-radius: var(--border-radius);
             padding: var(--spacing-xl);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
         }
         
         .chart-card h2 {
-            font-size: var(--font-size-h2);
-            font-weight: 700;
+            font-size: var(--font-size-h3);
             color: var(--neutral-900);
             margin-bottom: var(--spacing-lg);
         }
@@ -389,51 +236,15 @@
         .chart-container {
             position: relative;
             height: 300px;
-            margin-top: var(--spacing-md);
         }
         
-        /* ====================================
-           PERFORMANCE & CONFIG
-           ==================================== */
-        .perf-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: var(--spacing-md) 0;
-            border-bottom: var(--border-width) solid var(--neutral-200);
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
         }
         
-        .perf-item:last-child {
-            border-bottom: none;
-        }
-        
-        .perf-label {
-            font-size: var(--font-size-body);
-            color: var(--neutral-700);
-            font-weight: 500;
-        }
-        
-        .perf-value {
-            font-size: var(--font-size-h3);
-            font-weight: 700;
-            color: var(--neutral-900);
-        }
-        
-        .value-green {
-            color: var(--success);
-        }
-        
-        .value-blue {
-            color: var(--info);
-        }
-        
-        .value-gray {
-            color: var(--neutral-700);
-        }
-        
-        /* ====================================
-           FOOTER
-           ==================================== */
         .footer {
             background: var(--neutral-white);
             border-top: var(--border-width) solid var(--neutral-300);
@@ -448,27 +259,6 @@
             margin-bottom: var(--spacing-xs);
         }
         
-        .footer p:last-child {
-            margin-bottom: 0;
-        }
-        
-        /* ====================================
-           NOTIFICATION (Toast)
-           ==================================== */
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        /* ====================================
-           RESPONSIVE
-           ==================================== */
         @media (max-width: 768px) {
             .container {
                 padding: var(--spacing-lg) var(--spacing-md);
@@ -478,7 +268,6 @@
                 font-size: 32px;
             }
             
-            .controls-grid,
             .metrics,
             .rec-grid,
             .charts-grid {
@@ -489,75 +278,32 @@
                 height: 250px;
             }
         }
-        
-        /* ====================================
-           ACCESSIBILITY
-           ==================================== */
-        *:focus-visible {
-            outline: 2px solid var(--brand-primary);
-            outline-offset: 2px;
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Header -->
     <div class="header">
-    <div class="header-content" style="display: flex; align-items: center; gap: 15px;">
-        <!-- Logo -->
-        <img src="https://iconlogovector.com/uploads/images/2025/02/lg-67bd9a9ed34ad-SEB-bankas.webp" alt="SEB Bank Logo" width="90" height="90">
-        
-        <!-- Header Text -->
-        <div>
-            <h1 style="margin: 0;">SME Cash Management</h1>
-            <p style="margin: 0;">Intelligent Liquidity Optimization</p>
+        <div class="header-content">
+            <img src="https://iconlogovector.com/uploads/images/2025/02/lg-67bd9a9ed34ad-SEB-bankas.webp" alt="SEB Bank Logo" width="90" height="90">
+            <div>
+                <h1>SME Cash Management</h1>
+                <p>Intelligent Liquidity Optimization</p>
+            </div>
         </div>
     </div>
-</div>
-
-
 
     <div class="container">
-        <!-- Control Panel -->
+        <!-- Customer Info -->
         <div class="card">
-            <h2>Dashboard Configuration</h2>
-            <div class="controls-grid">
-                <div class="form-group">
-                    <label for="customerSelect">Customer Profile</label>
-                    <select id="customerSelect" onchange="updateDashboard()">
-                        <option>SME-12345</option>
-                        <option>SME-67890</option>
-                        <option>SME-24680</option>
-                        <option>SME-13579</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="balanceInput">Current Balance (€)</label>
-                    <input type="number" id="balanceInput" value="10000" min="0" step="100" oninput="updateBalance()">
-                </div>
-                
-                <div class="form-group">
-                    <label for="forecastDays">Forecast Period (days)</label>
-                    <select id="forecastDays">
-                        <option value="7">7 Days</option>
-                        <option value="14">14 Days</option>
-                        <option value="30" selected="">30 Days</option>
-                        <option value="90">90 Days</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>&nbsp;</label>
-                    <button class="btn" onclick="updateDashboard()">Update Dashboard</button>
-                </div>
+            <h2>Customer Information</h2>
+            <div class="info-section">
+                <p><strong>Customer ID:</strong> {{ customer_id[:20] }}...</p>
+                <p><strong>Business Cluster:</strong> {{ cluster }}</p>
+                <p><strong>Prediction Model:</strong> {{ model_used }}</p>
+                <p><strong>Forecast Period:</strong> {{ positive_weeks + negative_weeks }} weeks</p>
+                <p><strong>Total Transactions:</strong> {{ total_transactions }}</p>
+                <p><strong>Date Range:</strong> {{ date_range }}</p>
             </div>
         </div>
 
@@ -569,12 +315,9 @@
                     <path d="M9 11l3 3 5-5"></path>
                 </svg>
                 <div class="metric-label">Current Balance</div>
-                <div class="metric-value" id="metricBalance">€10,000</div>
-                <span class="metric-change change-up">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <path d="M6 10V2M6 2L2 6M6 2L10 6" stroke="currentColor" stroke-width="2"></path>
-                    </svg>
-                    +€340
+                <div class="metric-value">€{{ "{:,.2f}".format(current_balance) }}</div>
+                <span class="metric-change {% if current_balance > 0 %}change-up{% else %}change-down{% endif %}">
+                    {% if current_balance > 0 %}Positive{% else %}Negative{% endif %}
                 </span>
             </div>
             
@@ -583,13 +326,10 @@
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
-                <div class="metric-label">Avg Daily Cash Flow</div>
-                <div class="metric-value">€470</div>
-                <span class="metric-change change-up">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <path d="M6 10V2M6 2L2 6M6 2L10 6" stroke="currentColor" stroke-width="2"></path>
-                    </svg>
-                    +12.3%
+                <div class="metric-label">Avg Weekly Cash Flow</div>
+                <div class="metric-value">€{{ "{:,.2f}".format(avg_weekly_flow) }}</div>
+                <span class="metric-change {% if avg_weekly_flow > 0 %}change-up{% else %}change-down{% endif %}">
+                    {% if avg_weekly_flow > 0 %}+{% endif %}{{ "{:.1f}%".format((avg_weekly_flow / current_balance * 100) if current_balance != 0 else 0) }}
                 </span>
             </div>
             
@@ -599,13 +339,10 @@
                     <polyline points="2 17 12 22 22 17"></polyline>
                     <polyline points="2 12 12 17 22 12"></polyline>
                 </svg>
-                <div class="metric-label">Potential Interest (90d)</div>
-                <div class="metric-value">€89.40</div>
+                <div class="metric-label">Potential Interest ({{ positive_weeks + negative_weeks }}w)</div>
+                <div class="metric-value">€{{ "{:,.2f}".format(potential_interest) }}</div>
                 <span class="metric-change change-up">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <path d="M6 10V2M6 2L2 6M6 2L10 6" stroke="currentColor" stroke-width="2"></path>
-                    </svg>
-                    vs €29 baseline
+                    Investable: €{{ "{:,.0f}".format(total_investable) }}
                 </span>
             </div>
             
@@ -615,39 +352,36 @@
                     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                     <line x1="12" y1="22.08" x2="12" y2="12"></line>
                 </svg>
-                <div class="metric-label">Safety Buffer</div>
-                <div class="metric-value">€2,500</div>
+                <div class="metric-label">Cash Flow Outlook</div>
+                <div class="metric-value">{{ positive_weeks }}/{{ positive_weeks + negative_weeks }}</div>
                 <span class="metric-change change-up">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <path d="M6 10V2M6 2L2 6M6 2L10 6" stroke="currentColor" stroke-width="2"></path>
-                    </svg>
-                    Healthy
+                    Positive weeks
                 </span>
             </div>
         </div>
 
         <!-- Recommendation -->
-        <div class="recommendation">
+        <div class="recommendation {% if rec_type == 'warning' %}recommendation-warning{% endif %}">
             <h3>Optimization Recommendation</h3>
-            <div class="rec-action">Transfer €2,300 to Savings</div>
-            <p style="opacity: 0.9; margin-bottom: 1.5rem;">Based on 7-day cash flow forecast and safety buffer analysis</p>
+            <div class="rec-action">{{ recommendation }}</div>
+            <p style="opacity: 0.9; margin-bottom: 1.5rem;">Based on {{ positive_weeks + negative_weeks }}-week cash flow forecast and ML prediction model ({{ model_used }})</p>
             
             <div class="rec-grid">
                 <div class="rec-item">
-                    <label>Operating Balance</label>
-                    <div class="value">€7,700</div>
+                    <label>Current Balance</label>
+                    <div class="value">€{{ "{:,.2f}".format(current_balance) }}</div>
                 </div>
                 <div class="rec-item">
-                    <label>Savings Account</label>
-                    <div class="value">€2,300</div>
+                    <label>Investable Surplus</label>
+                    <div class="value">€{{ "{:,.2f}".format(total_investable) }}</div>
                 </div>
                 <div class="rec-item">
-                    <label>Expected Interest (30d)</label>
-                    <div class="value">€25.30</div>
+                    <label>Potential Interest</label>
+                    <div class="value">€{{ "{:,.2f}".format(potential_interest) }}</div>
                 </div>
                 <div class="rec-item">
-                    <label>Safety Coverage</label>
-                    <div class="value">118%</div>
+                    <label>Positive Weeks</label>
+                    <div class="value">{{ positive_weeks }}/{{ positive_weeks + negative_weeks }}</div>
                 </div>
             </div>
         </div>
@@ -655,45 +389,41 @@
         <!-- Charts Grid -->
         <div class="charts-grid">
             <div class="chart-card">
-                <h2>Daily Cash Flow</h2>
+                <h2>Weekly Cash Flow Forecast</h2>
                 <div class="chart-container">
-                    <canvas id="cashFlowChart" width="1099" height="375" style="display: block; box-sizing: border-box; height: 300px; width: 879px;"></canvas>
+                    <canvas id="cashFlowChart"></canvas>
                 </div>
             </div>
-            
-            
             
             <div class="chart-card">
-                <h2>Account Balances</h2>
+                <h2>Cumulative Balance Projection</h2>
                 <div class="chart-container">
-                    <canvas id="balanceChart" width="1099" height="375" style="display: block; box-sizing: border-box; height: 300px; width: 879px;"></canvas>
+                    <canvas id="balanceChart"></canvas>
                 </div>
             </div>
-            
-            
         </div>
 
-        <!-- Performance & Configuration -->
+        <!-- Rate Configuration -->
         <div class="charts-grid">
-            
-
             <div class="chart-card">
                 <h2>Rate Configuration</h2>
-                <div class="perf-item">
-                    <span class="perf-label">Operating Account</span>
-                    <span class="perf-value value-gray">0.01%</span>
-                </div>
-                <div class="perf-item">
-                    <span class="perf-label">Savings Account</span>
-                    <span class="perf-value value-gray">1.50%</span>
-                </div>
-                <div class="perf-item">
-                    <span class="perf-label">Money Market</span>
-                    <span class="perf-value value-gray">2.50%</span>
-                </div>
-                <div class="perf-item">
-                    <span class="perf-label">Overnight Deposit</span>
-                    <span class="perf-value value-gray">3.00%</span>
+                <div style="padding: var(--spacing-md) 0;">
+                    <div style="display: flex; justify-content: space-between; padding: var(--spacing-md) 0; border-bottom: 1px solid var(--neutral-200);">
+                        <span style="color: var(--neutral-700);">Operating Account</span>
+                        <span style="font-weight: 700;">0.01%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: var(--spacing-md) 0; border-bottom: 1px solid var(--neutral-200);">
+                        <span style="color: var(--neutral-700);">Savings Account</span>
+                        <span style="font-weight: 700;">1.50%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: var(--spacing-md) 0; border-bottom: 1px solid var(--neutral-200);">
+                        <span style="color: var(--neutral-700);">Money Market</span>
+                        <span style="font-weight: 700;">2.50%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: var(--spacing-md) 0;">
+                        <span style="color: var(--neutral-700);">Overnight Deposit</span>
+                        <span style="font-weight: 700;">3.00%</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -701,270 +431,125 @@
 
     <!-- Footer -->
     <div class="footer">
-        <div class="container">
-            <p><strong>SME Cash Flow Manager</strong> — Intelligent Liquidity Optimization</p>
-            <p>Powered by Machine Learning • Version 1.0</p>
-        <p>© 2025. SEB Bank</p></div>
+        <p><strong>SME Cash Flow Manager</strong> — Intelligent Liquidity Optimization</p>
+        <p>Powered by Machine Learning • Version 1.0</p>
+        <p>© 2025 SEB Bank</p>
     </div>
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
     <script>
-        // Check if Chart.js loaded
-        if (typeof Chart === 'undefined') {
-            document.body.innerHTML = `
-                <div style="max-width: 600px; margin: 5rem auto; padding: 2rem; background: white; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #E2E8F0;">
-                    <h2 style="color: #DC2626; margin-bottom: 1rem; font-size: 24px;">Internet Required</h2>
-                    <p style="color: #4A5568; margin-bottom: 1rem;">This dashboard needs Chart.js from the internet.</p>
-                    <p style="color: #4A5568;"><strong>Alternative:</strong> Use Python dashboard (works offline):</p>
-                    <pre style="background: #F7FAFC; padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: left; overflow-x: auto; border: 1px solid #E2E8F0;">streamlit run dashboard.py</pre>
-                </div>
-            `;
-        } else {
-            initializeCharts();
-        }
-
-        function initializeCharts() {
-            // Global chart defaults - SEB Style
-            Chart.defaults.font.family = "'Inter', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-            Chart.defaults.font.size = 12;
-            Chart.defaults.color = '#4A5568';
-            Chart.defaults.borderColor = '#E2E8F0';
-            
-            const chartOptions = {
+        // Weekly Cash Flow Chart - REAL DATA FROM BACKEND
+        const cashFlowCtx = document.getElementById('cashFlowChart').getContext('2d');
+        const cashFlowChart = new Chart(cashFlowCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ forecast_labels | tojson }},
+                datasets: [{
+                    label: 'Predicted Cash Flow',
+                    data: {{ forecast_values | tojson }},
+                    backgroundColor: function(context) {
+                        const value = context.parsed.y;
+                        return value >= 0 ? 'rgba(66, 169, 0, 0.8)' : 'rgba(220, 38, 38, 0.8)';
+                    },
+                    borderColor: function(context) {
+                        const value = context.parsed.y;
+                        return value >= 0 ? 'rgb(66, 169, 0)' : 'rgb(220, 38, 38)';
+                    },
+                    borderWidth: 2
+                }]
+            },
+            options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { 
-                        position: 'top',
-                        align: 'start',
-                        labels: {
-                            padding: 16,
-                            boxWidth: 12,
-                            boxHeight: 12,
-                            usePointStyle: true,
-                            font: { 
-                                size: 14, 
-                                weight: '600' 
-                            }
-                        }
+                    legend: {
+                        display: true,
+                        position: 'top'
                     },
                     tooltip: {
-                        backgroundColor: '#1A1F2E',
-                        padding: 12,
-                        cornerRadius: 8,
-                        titleFont: {
-                            size: 14,
-                            weight: '600'
-                        },
-                        bodyFont: {
-                            size: 13
+                        callbacks: {
+                            label: function(context) {
+                                return '€' + context.parsed.y.toLocaleString('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+                            }
                         }
                     }
-                },
-                interaction: {
-                    intersect: false,
-                    mode: 'index'
                 },
                 scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            font: {
-                                size: 12
-                            }
-                        }
-                    },
                     y: {
-                        grid: {
-                            color: '#EDF2F7',
-                            drawBorder: false
-                        },
+                        beginAtZero: false,
                         ticks: {
-                            font: {
-                                size: 12
+                            callback: function(value) {
+                                return '€' + value.toLocaleString();
                             }
                         }
                     }
                 }
-            };
+            }
+        });
 
-            // Cash Flow Chart
-            new Chart(document.getElementById('cashFlowChart'), {
-                type: 'bar',
-                data: {
-                    labels: ['Nov 5', 'Nov 6', 'Nov 7', 'Nov 8', 'Nov 9', 'Nov 10', 'Nov 11'],
-                    datasets: [{
-                        label: 'Inflow',
-                        data: [450, 520, 380, 610, 490, 350, 420],
-                        backgroundColor: '#00A878',
-                        borderRadius: 6,
-                        borderSkipped: false
-                    }, {
-                        label: 'Outflow',
-                        data: [380, 420, 390, 450, 410, 380, 360],
-                        backgroundColor: '#CBD5E0',
-                        borderRadius: 6,
-                        borderSkipped: false
-                    }]
+        // Balance Projection Chart - CUMULATIVE
+        const balanceCtx = document.getElementById('balanceChart').getContext('2d');
+        
+        // Calculate cumulative balance
+        const currentBal = {{ current_balance }};
+        const forecasts = {{ forecast_values | tojson }};
+        let cumulativeData = [currentBal];
+        for (let i = 0; i < forecasts.length; i++) {
+            cumulativeData.push(forecasts[i]);
+        }
+        
+        const balanceLabels = ['Current', ...{{ forecast_labels | tojson }}];
+        
+        const balanceChart = new Chart(balanceCtx, {
+            type: 'line',
+            data: {
+                labels: balanceLabels,
+                datasets: [{
+                    label: 'Projected Balance',
+                    data: cumulativeData,
+                    borderColor: 'rgb(66, 169, 0)',
+                    backgroundColor: 'rgba(66, 169, 0, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointRadius: 5,
+                    pointBackgroundColor: 'rgb(66, 169, 0)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return '€' + context.parsed.y.toLocaleString('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+                            }
+                        }
+                    }
                 },
-                options: chartOptions
-            });
-
-            // Liquidity Chart
-            new Chart(document.getElementById('liquidityChart'), {
-                type: 'line',
-                data: {
-                    labels: ['Nov 5', 'Nov 6', 'Nov 7', 'Nov 8', 'Nov 9', 'Nov 10', 'Nov 11'],
-                    datasets: [{
-                        label: 'Cumulative Outflow',
-                        data: [380, 800, 1190, 1640, 2050, 2430, 2790],
-                        backgroundColor: 'transparent',
-                        borderColor: '#718096',
-                        borderWidth: 2,
-                        fill: false,
-                        tension: 0.4,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#718096'
-                    }, {
-                        label: 'Safety Buffer',
-                        data: [450, 920, 1380, 1920, 2410, 2870, 3300],
-                        backgroundColor: 'transparent',
-                        borderColor: '#DC2626',
-                        borderWidth: 2,
-                        borderDash: [6, 4],
-                        fill: false,
-                        tension: 0.4,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#DC2626'
-                    }]
-                },
-                options: chartOptions
-            });
-
-            // Balance Chart
-            new Chart(document.getElementById('balanceChart'), {
-                type: 'line',
-                data: {
-                    labels: ['Day 1', 'Day 15', 'Day 30', 'Day 45', 'Day 60', 'Day 75', 'Day 90'],
-                    datasets: [{
-                        label: 'Operating',
-                        data: [7500, 6800, 7200, 6500, 7000, 6900, 7300],
-                        borderColor: '#718096',
-                        backgroundColor: 'transparent',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: false,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#718096'
-                    }, {
-                        label: 'Savings',
-                        data: [2500, 3400, 3100, 4000, 3700, 4100, 3900],
-                        borderColor: '#00A878',
-                        backgroundColor: 'transparent',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: false,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#00A878'
-                    }]
-                },
-                options: chartOptions
-            });
-
-            // Interest Chart
-            new Chart(document.getElementById('interestChart'), {
-                type: 'line',
-                data: {
-                    labels: ['Day 1', 'Day 15', 'Day 30', 'Day 45', 'Day 60', 'Day 75', 'Day 90'],
-                    datasets: [{
-                        label: 'With Optimization',
-                        data: [0.82, 12.45, 25.30, 39.80, 55.20, 72.15, 89.40],
-                        borderColor: '#00A878',
-                        backgroundColor: 'transparent',
-                        borderWidth: 3,
-                        fill: false,
-                        tension: 0.4,
-                        pointRadius: 5,
-                        pointBackgroundColor: '#00A878'
-                    }, {
-                        label: 'Baseline',
-                        data: [0.27, 4.15, 8.50, 13.20, 18.10, 23.50, 29.20],
-                        borderColor: '#A0AEC0',
-                        backgroundColor: 'transparent',
-                        borderWidth: 2,
-                        fill: false,
-                        tension: 0.4,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#A0AEC0',
-                        borderDash: [6, 4]
-                    }]
-                },
-                options: {
-                    ...chartOptions,
-                    plugins: {
-                        ...chartOptions.plugins,
-                        tooltip: {
-                            ...chartOptions.plugins.tooltip,
-                            callbacks: {
-                                label: function(context) {
-                                    return context.dataset.label + ': €' + context.parsed.y.toFixed(2);
-                                }
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function(value) {
+                                return '€' + value.toLocaleString();
                             }
                         }
                     }
                 }
-            });
-        }
-
-        function updateBalance() {
-            const balance = document.getElementById('balanceInput').value;
-            document.getElementById('metricBalance').textContent = '€' + parseInt(balance).toLocaleString();
-        }
-
-        function updateDashboard() {
-            const customer = document.getElementById('customerSelect').value;
-            const balance = document.getElementById('balanceInput').value;
-            const days = document.getElementById('forecastDays').value;
-            
-            // Show update notification
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 24px;
-                right: 24px;
-                background: white;
-                padding: 16px 20px;
-                border-radius: 12px;
-                box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-                border: 1px solid #E2E8F0;
-                z-index: 1000;
-                animation: slideIn 0.3s ease;
-                min-width: 280px;
-            `;
-            notification.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00A878" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M9 12l2 2 4-4"/>
-                    </svg>
-                    <div>
-                        <div style="font-weight: 700; color: #1A1F2E; margin-bottom: 4px;">Dashboard Updated</div>
-                        <div style="font-size: 14px; color: #718096;">Customer: ${customer}</div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideIn 0.3s ease reverse';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
+            }
+        });
     </script>
-
-
-</body></html>
+</body>
+</html>
