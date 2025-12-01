@@ -437,15 +437,15 @@
     </div>
 
     <script>
-        // Weekly Cash Flow Chart - REAL DATA FROM BACKEND
+        // Weekly Cash Flow Chart - SHOWS WEEKLY CHANGES
         const cashFlowCtx = document.getElementById('cashFlowChart').getContext('2d');
         const cashFlowChart = new Chart(cashFlowCtx, {
             type: 'bar',
             data: {
                 labels: {{ forecast_labels | tojson }},
                 datasets: [{
-                    label: 'Predicted Cash Flow',
-                    data: {{ forecast_values | tojson }},
+                    label: 'Weekly Cash Flow Change',
+                    data: {{ forecast_changes | tojson }},
                     backgroundColor: function(context) {
                         const value = context.parsed.y;
                         return value >= 0 ? 'rgba(66, 169, 0, 0.8)' : 'rgba(220, 38, 38, 0.8)';
@@ -489,17 +489,15 @@
             }
         });
 
-        // Balance Projection Chart - CUMULATIVE
+        // Balance Projection Chart - CUMULATIVE BALANCES
         const balanceCtx = document.getElementById('balanceChart').getContext('2d');
         
-        // Calculate cumulative balance
+        // Use cumulative balance data directly from backend
         const currentBal = {{ current_balance }};
-        const forecasts = {{ forecast_values | tojson }};
-        let cumulativeData = [currentBal];
-        for (let i = 0; i < forecasts.length; i++) {
-            cumulativeData.push(forecasts[i]);
-        }
+        const balances = {{ forecast_balances | tojson }};
         
+        // Add current balance as first point
+        const cumulativeData = [currentBal, ...balances];
         const balanceLabels = ['Current', ...{{ forecast_labels | tojson }}];
         
         const balanceChart = new Chart(balanceCtx, {

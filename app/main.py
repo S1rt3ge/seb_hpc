@@ -1,6 +1,6 @@
 """
 Complete FastAPI App with Real Predictions
-FIXED: Uses correct feature exclusion for 26-feature models
+FIXED: Proper chart data - weekly changes vs cumulative balance
 """
 
 from fastapi import FastAPI, Request, Form, HTTPException
@@ -86,7 +86,7 @@ def get_customers_list():
         GROUP BY cust_id
         HAVING txn_count >= 20
         ORDER BY txn_count DESC
-        LIMIT 500
+        LIMIT 100
     """
 
     customers = pd.read_sql_query(query, conn)
@@ -171,7 +171,7 @@ def get_customer_predictions(cust_id, n_weeks=4):
     print("Step 5: Converting to EUR...")
     growth_eur = predictor.to_euros(predictions_std[-n_weeks:])
 
-    # Step 6: Generate future cash flows
+    # Step 6: Generate future cash flows (CUMULATIVE)
     print("Step 6: Calculating future cash flows...")
     future_cashflows = [last_cashflow]
     for growth in growth_eur:
@@ -201,8 +201,8 @@ def get_customer_predictions(cust_id, n_weeks=4):
         'cluster': cluster,
         'model_used': model_used,
         'last_cashflow': last_cashflow,
-        'predictions': future_cashflows[1:],
-        'growth_rates': growth_eur.tolist(),
+        'predictions': future_cashflows[1:],  # Cumulative balances
+        'growth_rates': growth_eur.tolist(),  # Weekly changes (for bar chart)
         'avg_weekly_flow': avg_weekly_flow,
         'positive_weeks': positive_weeks,
         'negative_weeks': negative_weeks,
@@ -234,7 +234,7 @@ async def login(customer_id: str = Form(...)):
 
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(request: Request, customer_id: str):
-    """Dashboard with REAL predictions"""
+    """Dashboard with REAL predictions and FIXED charts"""
 
     try:
         # Get predictions
@@ -245,9 +245,14 @@ async def dashboard(request: Request, customer_id: str):
         total_transactions = len(transactions)
         date_range = f"{transactions['BookingDatetime'].min()} to {transactions['BookingDatetime'].max()}"
 
-        # Prepare chart data - WEEKLY FORECAST
+        # FIXED: Prepare chart data properly
         forecast_labels = [f"Week {i + 1}" for i in range(predictions['forecast_period'])]
-        forecast_values = [round(cf, 2) for cf in predictions['predictions']]
+
+        # For BAR CHART: Weekly changes (growth rates)
+        forecast_changes = [round(g, 2) for g in predictions['growth_rates']]
+
+        # For LINE CHART: Cumulative balances
+        forecast_balances = [round(cf, 2) for cf in predictions['predictions']]
 
         # Current balance
         current_balance = round(predictions['last_cashflow'], 2)
@@ -263,7 +268,7 @@ async def dashboard(request: Request, customer_id: str):
             recommendation = "Maintain current cash position"
             rec_type = "maintain"
 
-        # Render dashboard with REAL DATA
+        # Render dashboard with REAL DATA and FIXED chart data
         return templates.TemplateResponse(
             "SME Cash Management - SEB.html",
             {
@@ -280,7 +285,8 @@ async def dashboard(request: Request, customer_id: str):
                 "recommendation": recommendation,
                 "rec_type": rec_type,
                 "forecast_labels": forecast_labels,
-                "forecast_values": forecast_values,
+                "forecast_changes": forecast_changes,  # NEW: For bar chart (weekly changes)
+                "forecast_balances": forecast_balances,  # NEW: For line chart (cumulative)
                 "total_transactions": total_transactions,
                 "date_range": date_range,
             }
